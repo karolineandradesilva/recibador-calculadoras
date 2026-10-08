@@ -21,7 +21,7 @@ export const ui = {
     { name: 'revenue', label: 'Faturamento do mês', type: 'money', default: 50000, min: 0.01 },
     { name: 'cogs', label: 'Custo das mercadorias ou serviços vendidos', type: 'money', default: 22000, min: 0, required: false },
     { name: 'tax', label: 'Impostos sobre a venda', type: 'percent', default: 8, min: 0, max: 90, width: 'half', required: false },
-    { name: 'fees', label: 'Taxas de cartão e plataformas', type: 'percent', default: 3, min: 0, max: 90, width: 'half', required: false },
+    { name: 'fees', label: 'Taxas de cartão', type: 'percent', default: 3, min: 0, max: 90, width: 'half', required: false },
     { name: 'fixed', label: 'Despesas fixas do mês', type: 'money', default: 12000, min: 0, required: false, help: 'Aluguel, salários, pró-labore, contador, sistemas, marketing.' },
   ],
   compute(v) {

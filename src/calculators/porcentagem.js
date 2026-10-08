@@ -27,7 +27,7 @@ export const ui = {
       options: [
         { value: 'of', label: 'Quanto é X% de um valor' },
         { value: 'what', label: 'X é quantos % de Y' },
-        { value: 'change', label: 'Variação % de um valor para outro' },
+        { value: 'change', label: 'Variação % entre valores' },
       ],
     },
     { name: 'a', label: 'Percentual (X)', type: 'number', default: 15, width: 'half', decimals: undefined },

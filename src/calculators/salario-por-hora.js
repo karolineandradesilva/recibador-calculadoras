@@ -22,7 +22,7 @@ export const ui = {
   fields: [
     salaryField({ label: 'Salário mensal' }),
     { name: 'weekly', label: 'Horas por semana', type: 'number', default: 44, min: 1, max: 60, width: 'half', help: 'Jornada contratual (44 é o máximo da CLT).' },
-    { name: 'days', label: 'Dias trabalhados por semana', type: 'integer', default: 5, min: 1, max: 7, width: 'half' },
+    { name: 'days', label: 'Dias por semana', type: 'integer', default: 5, min: 1, max: 7, width: 'half' },
   ],
   compute(v) {
     const divisor = v.weekly * 5;

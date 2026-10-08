@@ -23,7 +23,7 @@ export const ui = {
     salaryField(),
     { name: 'days', label: 'Dias a receber no mês', type: 'integer', default: 18, min: 0, max: 31, width: 'half', help: 'Dias corridos de contrato no mês (sábados, domingos e feriados incluídos).' },
     { name: 'absences', label: 'Faltas injustificadas', type: 'integer', default: 0, min: 0, max: 31, width: 'half', required: false },
-    { name: 'dsrLost', label: 'Descansos semanais perdidos', type: 'integer', default: 0, min: 0, max: 5, required: false, advanced: true, width: 'half', help: 'Falta injustificada na semana pode fazer perder o DSR (Lei 605/1949).' },
+    { name: 'dsrLost', label: 'DSR perdidos', type: 'integer', default: 0, min: 0, max: 5, required: false, advanced: true, width: 'half', help: 'Falta injustificada na semana pode fazer perder o DSR (Lei 605/1949).' },
     dependentsField({ advanced: true }),
   ],
   validate(v) {

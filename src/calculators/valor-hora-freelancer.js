@@ -21,8 +21,8 @@ export const ui = {
   fields: [
     { name: 'income', label: 'Renda líquida desejada por mês', type: 'money', default: 7000, min: 1 },
     { name: 'costs', label: 'Custos mensais do trabalho', type: 'money', default: 900, min: 0, required: false, help: 'Equipamentos, softwares, internet, coworking, contador, previdência, plano de saúde.' },
-    { name: 'tax', label: 'Impostos sobre o faturamento', type: 'percent', default: 6, min: 0, max: 60, width: 'half', help: 'Ex.: 6% no Simples Anexo III; MEI tem custo fixo (use 0% e some o DAS aos custos).' },
-    { name: 'hours', label: 'Horas faturáveis por semana', type: 'number', default: 30, min: 1, max: 80, width: 'half', help: 'Só horas cobradas de clientes, sem prospecção e administração.' },
+    { name: 'tax', label: 'Impostos', type: 'percent', default: 6, min: 0, max: 60, width: 'half', help: 'Ex.: 6% no Simples Anexo III; MEI tem custo fixo (use 0% e some o DAS aos custos).' },
+    { name: 'hours', label: 'Horas faturáveis/semana', type: 'number', default: 30, min: 1, max: 80, width: 'half', help: 'Só horas cobradas de clientes, sem prospecção e administração.' },
     { name: 'weeksOff', label: 'Semanas sem trabalhar por ano', type: 'integer', default: 6, min: 0, max: 40, help: 'Férias, feriados e imprevistos.' },
   ],
   compute(v) {

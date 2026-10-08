@@ -21,7 +21,7 @@ export const meta = {
 export const ui = {
   fields: [
     { name: 'monthly', label: 'Faturamento do mês', type: 'money', default: 20000, min: 0.01, width: 'half' },
-    { name: 'rbt12', label: 'Receita dos últimos 12 meses (RBT12)', type: 'money', default: 240000, min: 0.01, width: 'half', help: 'Soma dos 12 meses anteriores ao mês de apuração.' },
+    { name: 'rbt12', label: 'Receita em 12 meses (RBT12)', type: 'money', default: 240000, min: 0.01, width: 'half', help: 'Soma dos 12 meses anteriores ao mês de apuração.' },
     {
       name: 'annex',
       label: 'Anexo',
@@ -30,13 +30,13 @@ export const ui = {
       options: [
         { value: 'I', label: 'Anexo I — comércio' },
         { value: 'II', label: 'Anexo II — indústria' },
-        { value: 'III', label: 'Anexo III — serviços (ex.: manutenção, agências)' },
-        { value: 'IV', label: 'Anexo IV — serviços (ex.: limpeza, obras, advocacia)' },
-        { value: 'V', label: 'Anexo V — serviços (ex.: auditoria, publicidade)' },
-        { value: 'factorR', label: 'Serviços sujeitos ao Fator R (III ou V)' },
+        { value: 'III', label: 'Anexo III — serviços' },
+        { value: 'IV', label: 'Anexo IV — obras e limpeza' },
+        { value: 'V', label: 'Anexo V — consultorias' },
+        { value: 'factorR', label: 'Fator R (Anexo III ou V)' },
       ],
     },
-    { name: 'payroll', label: 'Folha de salários dos últimos 12 meses', type: 'money', default: 72000, min: 0, width: 'half', showIf: (v) => v.annex === 'factorR', help: 'Salários, pró-labore, 13º, encargos (INSS patronal e FGTS).' },
+    { name: 'payroll', label: 'Folha em 12 meses', type: 'money', default: 72000, min: 0, width: 'half', showIf: (v) => v.annex === 'factorR', help: 'Salários, pró-labore, 13º, encargos (INSS patronal e FGTS).' },
   ],
   compute(v) {
     let annex = v.annex;

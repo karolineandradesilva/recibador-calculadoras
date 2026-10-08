@@ -33,7 +33,7 @@ export const ui = {
       help: 'O abono pecuniário permite converter até 1/3 das férias em dinheiro.',
     },
     dependentsField(),
-    { name: 'absences', label: 'Faltas injustificadas no período', type: 'integer', default: 0, min: 0, max: 365, width: 'half', help: 'Mais de 5 faltas reduzem os dias de férias.' },
+    { name: 'absences', label: 'Faltas no período', type: 'integer', default: 0, min: 0, max: 365, width: 'half', help: 'Faltas injustificadas no período aquisitivo. Mais de 5 reduzem os dias de férias.' },
     variableField(),
     { name: 'advance', label: 'Receber a 1ª parcela do 13º junto', type: 'checkbox', default: false, advanced: true },
   ],

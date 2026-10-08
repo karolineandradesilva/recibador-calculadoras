@@ -24,7 +24,7 @@ const y = P.year;
 
 const NOTICE_OPTIONS = {
   dismissal: [
-    { value: 'indemnified', label: 'Indenizado (não trabalhado)' },
+    { value: 'indemnified', label: 'Indenizado' },
     { value: 'worked', label: 'Trabalhado' },
   ],
   agreement: [
@@ -34,7 +34,7 @@ const NOTICE_OPTIONS = {
   resignation: [
     { value: 'worked', label: 'Trabalhado' },
     { value: 'waived', label: 'Dispensado pela empresa' },
-    { value: 'notServed', label: 'Não cumprido (será descontado)' },
+    { value: 'notServed', label: 'Não cumprido (desconto)' },
   ],
 };
 
@@ -60,7 +60,7 @@ export const ui = {
     },
     {
       name: 'overdue',
-      label: 'Férias vencidas não tiradas',
+      label: 'Férias vencidas',
       type: 'select',
       numeric: true,
       default: 0,

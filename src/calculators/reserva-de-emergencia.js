@@ -20,17 +20,17 @@ export const meta = {
 };
 
 const PROFILES = {
-  public: { label: 'Servidor público ou renda muito estável', months: 3 },
-  clt: { label: 'CLT (carteira assinada)', months: 6 },
-  variable: { label: 'Autônomo, PJ ou renda variável', months: 12 },
+  public: { label: 'Renda estável', months: 3 },
+  clt: { label: 'CLT', months: 6 },
+  variable: { label: 'Autônomo ou PJ', months: 12 },
 };
 
 export const ui = {
   fields: [
     { name: 'expenses', label: 'Gastos essenciais por mês', type: 'money', default: 4000, min: 1, help: 'Moradia, alimentação, contas, transporte, saúde e dívidas.' },
-    { name: 'profile', label: 'Tipo de renda', type: 'select', default: 'clt', options: Object.entries(PROFILES).map(([value, p]) => ({ value, label: `${p.label} — ${p.months} meses` })) },
+    { name: 'profile', label: 'Tipo de renda', type: 'select', default: 'clt', options: Object.entries(PROFILES).map(([value, p]) => ({ value, label: `${p.label} (${p.months} meses)` })) },
     { name: 'saved', label: 'Quanto já tem guardado', type: 'money', default: 2000, min: 0, required: false, width: 'half' },
-    { name: 'monthly', label: 'Quanto pode guardar por mês', type: 'money', default: 800, min: 0, required: false, width: 'half' },
+    { name: 'monthly', label: 'Pode guardar por mês', type: 'money', default: 800, min: 0, required: false, width: 'half' },
     { name: 'yield', label: 'Rendimento líquido', type: 'percent', default: Math.round(LATEST.cdi.value * 0.82 * 10) / 10, min: 0, max: 50, suffix: '% a.a.', advanced: true },
   ],
   compute(v) {

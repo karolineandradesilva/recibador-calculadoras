@@ -26,7 +26,7 @@ export const ui = {
     { name: 'in2', label: 'Volta do intervalo', type: 'time', default: '13:00', width: 'half', required: false },
     { name: 'out2', label: 'Saída', type: 'time', default: '17:48', width: 'half' },
     { name: 'journey', label: 'Jornada diária contratada', type: 'hours', default: '8:48', width: 'half', help: '44h semanais em 5 dias = 8h48.' },
-    { name: 'days', label: 'Dias trabalhados por semana', type: 'integer', default: 5, min: 1, max: 7, width: 'half' },
+    { name: 'days', label: 'Dias por semana', type: 'integer', default: 5, min: 1, max: 7, width: 'half' },
   ],
   validate(v) {
     const hasBreak = Number.isFinite(v.out1) || Number.isFinite(v.in2);

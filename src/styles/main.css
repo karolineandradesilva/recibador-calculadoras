@@ -734,13 +734,30 @@ td,
 }
 
 .fields {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 14px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 14px;
+  row-gap: 0;
+  align-items: start;
 }
 
+/* Each field spans three shared rows (label, control, help), so fields side
+   by side stay aligned even when one label wraps to two lines. */
 .field {
-  flex: 1 1 100%;
+  grid-column: span 6;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  margin-bottom: 18px;
+}
+
+.field > .field__label {
+  align-self: end;
+}
+
+.field__foot {
   min-width: 0;
 }
 
@@ -748,18 +765,27 @@ td,
   display: none;
 }
 
+@supports not (grid-template-rows: subgrid) {
+  .field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+}
+
 @media (min-width: 420px) {
   .field--half {
-    flex-basis: calc(50% - 7px);
+    grid-column: span 3;
   }
 
   .field--third {
-    flex-basis: calc(33.333% - 10px);
+    grid-column: span 2;
   }
 }
 
 .field__label {
   display: block;
+  line-height: 1.35;
   font-weight: 600;
   font-size: 0.92rem;
   margin-bottom: 7px;
@@ -833,6 +859,20 @@ input[type='date'].input,
 input[type='time'].input {
   min-height: 52px;
   line-height: 52px;
+  min-width: 0;
+  padding-right: 10px;
+}
+
+input[type='date'].input::-webkit-calendar-picker-indicator,
+input[type='time'].input::-webkit-calendar-picker-indicator {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.input,
+.select select {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .input::placeholder {
@@ -2843,4 +2883,25 @@ tbody tr:last-child td {
 
 .print-only {
   display: none;
+}
+
+.field__label:empty {
+  margin: 0;
+}
+
+@media (max-width: 419px) {
+  .select select {
+    padding-left: 13px;
+    padding-right: 34px;
+    font-size: 0.97rem;
+  }
+
+  .select::after {
+    right: 14px;
+  }
+
+  .calc__form {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
 }

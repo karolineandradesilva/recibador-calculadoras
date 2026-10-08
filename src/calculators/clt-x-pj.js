@@ -29,13 +29,13 @@ export const ui = {
       type: 'select',
       default: 'factorR',
       options: [
-        { value: 'factorR', label: 'Simples com Fator R (Anexo III com pró-labore de 28%)' },
+        { value: 'factorR', label: 'Fator R (Anexo III)' },
         { value: 'III', label: 'Simples — Anexo III' },
         { value: 'V', label: 'Simples — Anexo V' },
       ],
     },
-    { name: 'accountant', label: 'Contador e custos da empresa', type: 'money', default: 350, min: 0, required: false, width: 'half' },
-    { name: 'own', label: 'Benefícios que o PJ paga sozinho', type: 'money', default: 600, min: 0, required: false, width: 'half', help: 'Plano de saúde, previdência etc.' },
+    { name: 'accountant', label: 'Contador e custos', type: 'money', default: 350, min: 0, required: false, width: 'half' },
+    { name: 'own', label: 'Benefícios pagos pelo PJ', type: 'money', default: 600, min: 0, required: false, width: 'half', help: 'Plano de saúde, previdência etc.' },
     dependentsField({ advanced: true }),
   ],
   compute(v) {

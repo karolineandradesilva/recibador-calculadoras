@@ -27,8 +27,8 @@ export const ui = {
       type: 'select',
       default: 'simples',
       options: [
-        { value: 'simples', label: 'Simples Nacional (Anexos I, II, III ou V)' },
-        { value: 'iv', label: 'Simples Nacional — Anexo IV' },
+        { value: 'simples', label: 'Simples (exceto Anexo IV)' },
+        { value: 'iv', label: 'Simples — Anexo IV' },
         { value: 'general', label: 'Lucro Presumido ou Real' },
       ],
     },

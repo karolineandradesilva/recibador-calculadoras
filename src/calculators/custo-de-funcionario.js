@@ -27,9 +27,9 @@ export const ui = {
       type: 'select',
       default: 'simples',
       options: [
-        { value: 'simples', label: 'Simples Nacional (Anexos I, II, III e V)' },
-        { value: 'simplesIV', label: 'Simples Nacional — Anexo IV' },
-        { value: 'general', label: 'Lucro Presumido ou Lucro Real' },
+        { value: 'simples', label: 'Simples (exceto Anexo IV)' },
+        { value: 'simplesIV', label: 'Simples — Anexo IV' },
+        { value: 'general', label: 'Lucro Presumido ou Real' },
       ],
     },
     { name: 'rat', label: 'RAT ajustado (RAT × FAP)', type: 'percent', default: 2, min: 0.5, max: 6, width: 'half', showIf: (v) => v.regime !== 'simples' },

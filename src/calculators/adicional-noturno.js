@@ -36,7 +36,7 @@ export const ui = {
       ],
       width: 'half',
     },
-    { name: 'hours', label: 'Horas noturnas no mês (relógio)', type: 'hours', default: '140:00', min: 0.01, max: 217, width: 'half', help: 'Horas reais trabalhadas entre 22h e 5h (no máximo 7 por dia).' },
+    { name: 'hours', label: 'Horas noturnas no mês', type: 'hours', default: '140:00', min: 0.01, max: 217, width: 'half', help: 'Horas reais trabalhadas entre 22h e 5h (no máximo 7 por dia).' },
     {
       name: 'type',
       label: 'Tipo de trabalho',

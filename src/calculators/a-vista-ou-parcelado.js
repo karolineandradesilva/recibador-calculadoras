@@ -26,7 +26,7 @@ export const ui = {
     { name: 'cash', label: 'Preço à vista', type: 'money', default: 2850, min: 0.01, width: 'half' },
     { name: 'installment', label: 'Valor da parcela', type: 'money', default: 300, min: 0.01, width: 'half' },
     { name: 'n', label: 'Número de parcelas', type: 'integer', default: 10, min: 1, max: 120, width: 'half' },
-    { name: 'yield', label: 'Rendimento líquido do seu dinheiro', type: 'percent', default: Math.round(cdi * 0.85 * 10) / 10, min: 0, max: 100, width: 'half', suffix: '% a.a.', help: `Ex.: CDB a 100% do CDI após IR. CDI atual: ${String(cdi).replace('.', ',')}% a.a.` },
+    { name: 'yield', label: 'Rendimento do dinheiro', type: 'percent', default: Math.round(cdi * 0.85 * 10) / 10, min: 0, max: 100, width: 'half', suffix: '% a.a.', help: `Ex.: CDB a 100% do CDI após IR. CDI atual: ${String(cdi).replace('.', ',')}% a.a.` },
   ],
   compute(v) {
     const i = annualToMonthly(frac(v.yield));

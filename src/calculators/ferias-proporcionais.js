@@ -25,7 +25,7 @@ const y = P.year;
 export const ui = {
   fields: [
     salaryField(),
-    { name: 'start', label: 'Início do período aquisitivo', type: 'date', default: `${y - 1}-11-03`, width: 'half', help: 'Data de admissão ou do último aniversário do contrato.' },
+    { name: 'start', label: 'Início do período', type: 'date', default: `${y - 1}-11-03`, width: 'half', help: 'Data de admissão ou do último aniversário do contrato.' },
     { name: 'end', label: 'Último dia de trabalho', type: 'date', default: `${y}-08-20`, width: 'half', after: 'start', afterMessage: 'A saída deve ser igual ou posterior ao início do período aquisitivo.', maxSpanDays: 366 * 3, spanMessage: 'O período aquisitivo tem no máximo 12 meses. Informe o início do período atual, não a data de admissão antiga.' },
     {
       name: 'reason',
@@ -36,7 +36,7 @@ export const ui = {
         { value: 'dismissal', label: 'Dispensa sem justa causa' },
         { value: 'resignation', label: 'Pedido de demissão' },
         { value: 'agreement', label: 'Acordo (art. 484-A)' },
-        { value: 'contractEnd', label: 'Fim de contrato por prazo determinado' },
+        { value: 'contractEnd', label: 'Fim de contrato a prazo' },
         { value: 'cause', label: 'Dispensa por justa causa' },
       ],
     },

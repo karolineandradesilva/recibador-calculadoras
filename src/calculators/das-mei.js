@@ -21,7 +21,7 @@ export const meta = {
 export const ui = {
   fields: [
     { name: 'activity', label: 'Atividade', type: 'select', default: 'services', options: Object.entries(MEI_ACTIVITIES).map(([value, label]) => ({ value, label })) },
-    { name: 'revenue', label: 'Faturamento no ano (até agora ou previsto)', type: 'money', default: 54000, min: 0, width: 'half' },
+    { name: 'revenue', label: 'Faturamento no ano', help: 'Até agora ou o previsto para o ano.', type: 'money', default: 54000, min: 0, width: 'half' },
     { name: 'months', label: 'Meses de atividade no ano', type: 'integer', default: 12, min: 1, max: 12, width: 'half', help: 'No ano de abertura, conte os meses desde a abertura (fração conta como mês inteiro).' },
   ],
   compute(v) {

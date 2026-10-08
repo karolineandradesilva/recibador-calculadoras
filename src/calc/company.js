@@ -41,8 +41,8 @@ export const MEI_ACTIVITIES = {
   commerce: 'Comércio ou indústria',
   services: 'Prestação de serviços',
   both: 'Comércio e serviços',
-  trucker: 'MEI Caminhoneiro (transporte de cargas)',
-  truckerServices: 'MEI Caminhoneiro com serviços sujeitos a ISS',
+  trucker: 'Caminhoneiro (cargas)',
+  truckerServices: 'Caminhoneiro + serviços',
 };
 
 export function meiDas({ activity }, p = CURRENT) {

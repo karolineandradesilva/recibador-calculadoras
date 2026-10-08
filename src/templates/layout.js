@@ -58,7 +58,7 @@ function footer({ calculatorsByCategory, buildYear }) {
     </div>
     <div class="footer-bottom">
       <p>© <span data-year>${buildYear}</span> Recibador. Ferramenta gratuita de apoio; os resultados são estimativas e não substituem orientação profissional.</p>
-      <p><a href="/calculadoras/">Todas as calculadoras</a> · <a href="/sitemap.xml">Mapa do site</a></p>
+      <p><a href="/calculadoras/">Todas as calculadoras</a> · <a href="/metodologia/">Metodologia</a></p>
     </div>
   </div>
 </footer>`;
@@ -77,6 +77,9 @@ function consentBanner() {
 
 function analyticsHead() {
   let html = '';
+  if (SITE.cfBeaconToken) {
+    html += `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${SITE.cfBeaconToken}"}'></script>`;
+  }
   if (SITE.gaId) {
     html += `<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{if(localStorage.getItem('recibador-consent-v1')==='granted')gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'})}catch(e){}gtag('js',new Date());gtag('config','${SITE.gaId}',{anonymize_ip:true});</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=${SITE.gaId}"></script>`;

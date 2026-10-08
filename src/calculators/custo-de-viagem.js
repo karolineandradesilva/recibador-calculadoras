@@ -22,7 +22,7 @@ export const ui = {
   fields: [
     { name: 'distance', label: 'Distância (só ida)', type: 'number', default: 430, min: 1, max: 100000, suffix: 'km', width: 'half' },
     { name: 'consumption', label: 'Consumo do carro', type: 'number', default: 11.5, min: 0.5, max: 60, suffix: 'km/l', width: 'half' },
-    { name: 'price', label: 'Preço do combustível (litro)', type: 'money', default: 6.29, min: 0.01, width: 'half' },
+    { name: 'price', label: 'Preço do litro', type: 'money', default: 6.29, min: 0.01, width: 'half' },
     { name: 'tolls', label: 'Pedágios (total)', type: 'money', default: 85, min: 0, required: false, width: 'half' },
     { name: 'roundTrip', label: 'Ida e volta', type: 'checkbox', default: true },
     { name: 'people', label: 'Pessoas para dividir', type: 'integer', default: 3, min: 1, max: 50, width: 'half' },

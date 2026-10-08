@@ -184,9 +184,9 @@ export function noticeDays(admission, termination, p = CURRENT) {
 export const TERMINATION_REASONS = {
   dismissal: 'Dispensa sem justa causa',
   resignation: 'Pedido de demissão',
-  agreement: 'Acordo entre as partes (art. 484-A)',
+  agreement: 'Acordo (art. 484-A)',
   cause: 'Dispensa por justa causa',
-  contractEnd: 'Término de contrato por prazo determinado',
+  contractEnd: 'Fim de contrato a prazo',
 };
 
 /**

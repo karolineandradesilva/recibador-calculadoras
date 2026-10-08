@@ -25,7 +25,7 @@ export const ui = {
       default: 'apply',
       options: [
         { value: 'apply', label: 'Valor depois do aumento' },
-        { value: 'rate', label: 'De quanto foi o aumento (%)' },
+        { value: 'rate', label: 'Qual foi o aumento (%)' },
         { value: 'original', label: 'Valor antes do aumento' },
       ],
     },

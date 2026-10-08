@@ -12,6 +12,8 @@ export const SITE = {
   description:
     'Calculadoras gratuitas de salário, férias, rescisão, 13º, impostos, juros e investimentos, com as regras oficiais em vigor e explicação de cada cálculo.',
 
+  // Cloudflare Web Analytics (cookieless) site token. Public by design.
+  cfBeaconToken: '0da4609bd16b41fdb0a939402526dd3d',
   // Google Analytics 4 measurement ID (G-XXXXXXX). Empty = disabled.
   gaId: process.env.RECIBADOR_GA_ID ?? '',
   // Google AdSense publisher ID (ca-pub-XXXXXXXXXXXXXXXX). Empty = disabled.

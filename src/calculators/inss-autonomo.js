@@ -19,9 +19,9 @@ export const meta = {
 };
 
 const PLANS = {
-  normal: { label: 'Plano normal (20%)', rate: P.inss.individualRate },
-  simplified: { label: 'Plano simplificado (11% do mínimo)', rate: P.inss.simplifiedRate },
-  lowIncome: { label: 'Facultativo de baixa renda (5% do mínimo)', rate: P.inss.lowIncomeRate },
+  normal: { label: 'Normal (20%)', rate: P.inss.individualRate },
+  simplified: { label: 'Simplificado (11%)', rate: P.inss.simplifiedRate },
+  lowIncome: { label: 'Baixa renda (5%)', rate: P.inss.lowIncomeRate },
 };
 
 export const ui = {

@@ -68,10 +68,18 @@ export function renderField(field, values, parsed = values, prefix = 'f') {
   const id = `${prefix}-${field.name}`;
   const value = values[field.name];
   const hidden = field.showIf && !field.showIf(parsed);
-  const width = field.width === 'half' ? ' field--half' : field.width === 'third' ? ' field--third' : '';
+  // Choices with long labels never share a row: they would be truncated.
+  let w = field.width;
+  if ((field.type === 'select' || field.type === 'radio') && w) {
+    const opts = options(field, parsed) ?? [];
+    const longest = Math.max(0, ...opts.map((o) => String(o.label).length));
+    const total = opts.reduce((a, o) => a + String(o.label).length, 0);
+    if (longest > 14 || (field.type === 'radio' && total > 22)) w = undefined;
+  }
+  const width = w === 'half' ? ' field--half' : w === 'third' ? ' field--third' : '';
   const label =
     field.type === 'checkbox'
-      ? ''
+      ? '<span class="field__label" aria-hidden="true"></span>'
       : `<label class="field__label" id="${id}-label"${field.type === 'radio' ? '' : ` for="${id}"`}>${esc(field.label)}${
           field.required === false && field.type !== 'select' ? ' <span class="field__opt">opcional</span>' : ''
         }</label>`;
@@ -80,7 +88,7 @@ export function renderField(field, values, parsed = values, prefix = 'f') {
     value,
     parsed,
     id,
-  )}${field.help ? `<p class="field__help" id="${id}-help">${field.help}</p>` : ''}<p class="field__error" id="${id}-error" role="alert"></p></div>`;
+  )}<div class="field__foot">${field.help ? `<p class="field__help" id="${id}-help">${field.help}</p>` : ''}<p class="field__error" id="${id}-error" role="alert"></p></div></div>`;
 }
 
 export function renderFields(fields, values, parsed = values) {

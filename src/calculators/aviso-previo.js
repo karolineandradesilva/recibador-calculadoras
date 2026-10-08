@@ -26,7 +26,7 @@ export const ui = {
   fields: [
     salaryField(),
     { name: 'admission', label: 'Data de admissão', type: 'date', default: `${y - 7}-05-02`, width: 'half' },
-    { name: 'notice', label: 'Data da comunicação do aviso', type: 'date', default: `${y}-09-30`, width: 'half', help: 'Dia em que a dispensa foi comunicada.', after: 'admission', afterMessage: 'O aviso deve ser igual ou posterior à data de admissão.', maxSpanDays: 60 * 366, spanMessage: 'Contrato com mais de 60 anos: confira as datas.' },
+    { name: 'notice', label: 'Data do aviso', type: 'date', default: `${y}-09-30`, width: 'half', help: 'Dia em que a dispensa foi comunicada.', after: 'admission', afterMessage: 'O aviso deve ser igual ou posterior à data de admissão.', maxSpanDays: 60 * 366, spanMessage: 'Contrato com mais de 60 anos: confira as datas.' },
     {
       name: 'mode',
       label: 'Tipo de aviso',

@@ -1,6 +1,6 @@
 import { rentAdjustment } from '../calc/indices.js';
 import { brl, row, pct } from './_shared.js';
-import { SERIES, INDEX_INFO, indexOptions, monthOptions, latestMonth, monthLabel, nextMonth, UPDATED_AT } from './_indices.js';
+import { SERIES, INDEX_INFO, indexOptions, monthOptions, latestMonth, monthLabel, shortMonthLabel, nextMonth, UPDATED_AT } from './_indices.js';
 import { dateLabel } from '../lib/format.js';
 
 export const meta = {
@@ -45,7 +45,7 @@ export const ui = {
         {
           rows: [
             row('Aluguel atual', v.rent),
-            row('Período do índice', `${monthLabel(r.start)} a ${monthLabel(r.end)}`),
+            row('Período do índice', `${shortMonthLabel(r.start)} a ${shortMonthLabel(r.end)}`),
             row(`${name} acumulado`, pct(r.rate)),
             row('Novo aluguel', r.newRent, 'total'),
           ],
