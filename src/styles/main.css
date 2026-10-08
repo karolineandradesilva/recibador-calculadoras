@@ -3105,3 +3105,20 @@ tbody tr:last-child td {
 .calc__result:has(.result-empty) .result-tools {
   display: none;
 }
+
+/* Laptop widths: the top menu gained "Início"; keep room for the search. */
+@media (min-width: 1080px) and (max-width: 1279px) {
+  .nav {
+    margin-left: 10px;
+  }
+
+  .nav a {
+    padding: 8px 7px;
+    font-size: 0.88rem;
+    gap: 6px;
+  }
+
+  .header-search {
+    min-width: 170px;
+  }
+}
