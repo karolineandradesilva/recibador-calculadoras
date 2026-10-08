@@ -12,6 +12,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
 
 concurrency:
   group: pages
@@ -65,6 +66,13 @@ jobs:
         with:
           path: dist
 
+      - name: Avisar falha (abre ou atualiza uma issue)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: bash scripts/report-failure.sh "Falha no build/deploy diário" ".indices-problems.md"
+
   deploy:
     needs: build
     runs-on: ubuntu-24.04
@@ -74,3 +82,25 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5.0.1
+
+      - name: Avisar falha no deploy
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue create --title "Falha no deploy para o GitHub Pages ($(date -u +%Y-%m-%d))" --label falha-automatica \
+            --body "O build passou, mas a publicação falhou. O site continua na versão anterior. Detalhes: $RUN_URL"
+
+      - name: Fechar avisos de falha resolvidos
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          # Only build/deploy failures; monitor failures are closed by a human.
+          for n in $(gh api "repos/$GH_REPO/issues?labels=falha-automatica&state=open&per_page=100" --jq '.[] | select(.title | test("^Falha no (build|deploy)")) | .number'); do
+            gh issue close "$n" --comment "Resolvido: o build e o deploy voltaram a funcionar ($RUN_URL)."
+          done

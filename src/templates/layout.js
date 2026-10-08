@@ -12,9 +12,9 @@ export function searchBox({ id, big = false, placeholder = 'Buscar calculadora�
 
 function header(current) {
   const link = (href, label, cat, active) =>
-    `<li><a href="${href}"${cat ? ` data-cat="${cat}"` : ' data-cat="all"'}${active ? ' aria-current="page"' : ''}><span class="nav__dot" aria-hidden="true"></span>${esc(label)}</a></li>`;
+    `<li><a href="${href}" data-cat="${cat ?? 'all'}"${active ? ' aria-current="page"' : ''}><span class="nav__dot" aria-hidden="true"></span>${esc(label)}</a></li>`;
   const links = CATEGORIES.map((c) => link(`/${c.slug}/`, c.short, c.slug, current === c.slug)).join('') + link('/calculadoras/', 'Todas', null, current === 'all');
-  const mobileLinks = CATEGORIES.map((c) => link(`/${c.slug}/`, c.name, c.slug, current === c.slug)).join('') + link('/calculadoras/', 'Todas as calculadoras', null, current === 'all');
+  const mobileLinks = link('/', 'Início', 'home', current === 'home') + CATEGORIES.map((c) => link(`/${c.slug}/`, c.name, c.slug, current === c.slug)).join('') + link('/calculadoras/', 'Todas as calculadoras', null, current === 'all');
   return `<header class="site-header">
   <div class="wrap site-header__bar">
     <a class="logo" href="/" aria-label="Recibador — página inicial">${LOGO_MARK}<span>Recibador</span></a>

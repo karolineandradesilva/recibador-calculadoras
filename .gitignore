@@ -4,3 +4,4 @@ dist/
 .DS_Store
 *.log
 .source-alerts.md
+.indices-problems.md

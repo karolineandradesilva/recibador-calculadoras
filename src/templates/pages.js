@@ -95,7 +95,7 @@ ${breadcrumb(crumbs)}
           ${renderFields(ui.fields, values, parsed)}
           <div class="calc__actions">
             <button type="submit" class="btn btn--primary"><span class="eq" aria-hidden="true"><i></i><i></i></span>Calcular</button>
-            <button type="button" class="btn btn--ghost" data-action="reset" aria-label="Limpar e voltar aos valores de exemplo">${icon('refresh')}<span>Limpar</span></button>
+            <button type="button" class="btn btn--ghost" data-action="reset" aria-label="Limpar todos os campos">${icon('refresh')}<span>Limpar</span></button>
           </div>
         </form>
         <div class="calc__result" tabindex="-1" aria-labelledby="res-title">

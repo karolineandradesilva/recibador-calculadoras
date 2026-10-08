@@ -10,6 +10,7 @@ import { track } from './track.js';
 import { animateValue, moneyFromText } from './animate.js';
 
 const DEBOUNCE_MS = 160;
+const EMPTY_RESULT = '<div class="result-empty"><span class="eq" aria-hidden="true"><i></i><i></i></span><p>Preencha os campos para ver o resultado.</p></div>';
 
 function readRaw(form, field) {
   if (field.type === 'radio') {
@@ -89,9 +90,9 @@ export function mount(ui, { slug, title }) {
       if (showAll) {
         status.textContent = 'Revise os campos destacados.';
         const first = form.querySelector('.has-error input, .has-error select');
-        if (first) first.focus();
+        if (first) first.focus({ preventScroll: true });
       }
-      root.classList.add('is-stale');
+      if (!out.querySelector('.result-empty')) root.classList.add('is-stale');
       return null;
     }
     let result;
@@ -169,10 +170,24 @@ export function mount(ui, { slug, title }) {
     if (!btn) return;
     const action = btn.dataset.action;
     if (action === 'reset') {
+      // Clear what the user types; choices go back to their defaults
+      // because they always need a selected option.
       form.reset();
+      for (const f of fields) {
+        if (['select', 'radio', 'checkbox'].includes(f.type)) continue;
+        const el = form.elements.namedItem(f.name);
+        if (el) el.value = '';
+      }
       touched.clear();
+      for (const f of fields) setError(f.name, '');
+      syncVisibility(collect());
       history.replaceState(null, '', location.pathname);
-      run({ fromUser: false });
+      lastResult = null;
+      root.classList.remove('is-stale');
+      out.innerHTML = EMPTY_RESULT;
+      status.textContent = 'Campos limpos.';
+      const first = form.querySelector('.field:not([hidden]) .input');
+      if (first) first.focus({ preventScroll: true });
       track('calculator_reset', { calculator: slug });
     } else if (action === 'print') {
       track('calculator_print', { calculator: slug });

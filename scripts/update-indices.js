@@ -5,6 +5,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { checkLatestUpdate, checkMonthlyUpdate } from './lib/indices-guard.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'src/data/indices.json');
@@ -112,8 +113,17 @@ async function main() {
       latest[name] = previous.latest[name];
     }
   }
-  if (!(latest.selic.value > 0 && latest.selic.value < 60)) throw new Error('Selic out of range');
-  if (!(latest.usd.value > 1 && latest.usd.value < 30)) throw new Error('USD out of range');
+  // Guardrails: compare with what is already published. Any anomaly stops
+  // here without writing, so the workflow fails and nothing is deployed.
+  const problems = [
+    ...Object.keys(monthly).flatMap((k) => checkMonthlyUpdate(k, monthly[k], previous?.monthly?.[k])),
+    ...checkLatestUpdate(latest, previous?.latest),
+  ];
+  if (problems.length) {
+    const report = problems.map((p) => `- ${p}`).join('\n');
+    await writeFile(path.join(ROOT, '.indices-problems.md'), `${report}\n`);
+    throw new Error(`dados do Banco Central bloqueados pelas verificações:\n${report}`);
+  }
 
   const payload = { monthly, latest };
   const sameData = previous && JSON.stringify({ monthly: previous.monthly, latest: previous.latest }) === JSON.stringify(payload);

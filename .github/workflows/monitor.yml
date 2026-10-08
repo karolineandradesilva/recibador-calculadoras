@@ -37,7 +37,14 @@ jobs:
             echo
             echo "Revise os valores em src/data/params/ e rode npm test antes de publicar."
           } > body.md
-          gh issue create --title "$title" --body-file body.md
+          gh issue create --title "$title" --body-file body.md --label regras
+
+      - name: Avisar falha do monitor
+        if: steps.check.outputs.code != '0' && steps.check.outputs.code != '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: bash scripts/report-failure.sh "Falha no monitor de fontes oficiais" ""
 
       - name: Salvar estado do monitor
         run: |

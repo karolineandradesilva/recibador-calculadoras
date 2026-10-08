@@ -3054,7 +3054,46 @@ tbody tr:last-child td {
   }
 }
 
+[data-cat='home'] {
+  --cat: var(--brand);
+}
+
 /* "Todas": a dot with every category color. */
 [data-cat='all'] .nav__dot {
   background: conic-gradient(var(--c-trabalho) 0 60deg, var(--c-impostos) 0 120deg, var(--c-financas) 0 180deg, var(--c-indices) 0 240deg, var(--c-negocios) 0 300deg, var(--c-dia-a-dia) 0 360deg);
+}
+
+/* Empty result state (after "Limpar"). */
+.result-empty {
+  min-height: 220px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+  color: var(--res-ink-2);
+}
+
+.result-empty .eq {
+  width: 34px;
+  gap: 7px;
+}
+
+.result-empty .eq i {
+  height: 5px;
+  background: rgb(255 255 255 / 70%);
+}
+
+.result-empty .eq i + i {
+  background: var(--gold);
+}
+
+.result-empty p {
+  margin: 0;
+  max-width: 24ch;
+  font-size: 0.98rem;
+}
+
+.calc__result:has(.result-empty) .result-tools {
+  display: none;
 }
