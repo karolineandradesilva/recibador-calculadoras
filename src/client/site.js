@@ -16,30 +16,48 @@ function storage(action, key, value) {
 /* Footer year stays correct even if a build is older than New Year. */
 for (const el of document.querySelectorAll('[data-year]')) el.textContent = String(new Date().getFullYear());
 
-/* Mobile navigation. */
-const menuBtn = document.querySelector('[data-menu-toggle]');
-const nav = document.getElementById('site-nav');
-if (menuBtn && nav) {
-  const setOpen = (open) => {
-    menuBtn.setAttribute('aria-expanded', String(open));
-    menuBtn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-    document.documentElement.classList.toggle('nav-open', open);
+/* Mobile navigation: a full-screen dialog outside the header, so it never
+   depends on the header's stacking or blur (iOS Safari is fragile there).
+   Scroll is locked by fixing the body in place and restoring the offset. */
+const openBtn = document.querySelector('[data-menu-open]');
+const mnav = document.getElementById('mobile-nav');
+if (openBtn && mnav) {
+  const closeBtn = mnav.querySelector('[data-menu-close]');
+  let savedY = 0;
+  const lock = () => {
+    savedY = window.scrollY;
+    Object.assign(document.body.style, { position: 'fixed', top: `-${savedY}px`, left: '0', right: '0', width: '100%' });
   };
-  menuBtn.addEventListener('click', () => setOpen(menuBtn.getAttribute('aria-expanded') !== 'true'));
-  // Closing on navigation keeps the back/forward cache from restoring an open menu.
-  nav.addEventListener('click', (e) => {
-    if (e.target.closest('a')) setOpen(false);
-  });
-  window.addEventListener('pageshow', () => setOpen(false));
-  // Leaving the mobile breakpoint with the menu open must not leave the page locked.
-  matchMedia('(min-width: 1000px)').addEventListener('change', (e) => {
-    if (e.matches) setOpen(false);
+  const unlock = () => {
+    Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
+    window.scrollTo(0, savedY);
+  };
+  const isOpen = () => !mnav.hidden;
+  const setOpen = (open, { restoreFocus = true } = {}) => {
+    if (open === isOpen()) return;
+    mnav.hidden = !open;
+    openBtn.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('nav-open', open);
+    if (open) {
+      lock();
+      closeBtn.focus({ preventScroll: true });
+    } else {
+      unlock();
+      if (restoreFocus) openBtn.focus({ preventScroll: true });
+    }
+  };
+  openBtn.addEventListener('click', () => setOpen(true));
+  closeBtn.addEventListener('click', () => setOpen(false));
+  mnav.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false, { restoreFocus: false });
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && document.documentElement.classList.contains('nav-open')) {
-      setOpen(false);
-      menuBtn.focus();
-    }
+    if (e.key === 'Escape' && isOpen()) setOpen(false);
+  });
+  // Back/forward cache and rotating to a desktop width must never leave it open.
+  window.addEventListener('pageshow', () => setOpen(false, { restoreFocus: false }));
+  matchMedia('(min-width: 1080px)').addEventListener('change', (e) => {
+    if (e.matches) setOpen(false, { restoreFocus: false });
   });
 }
 

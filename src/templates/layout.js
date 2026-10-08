@@ -11,20 +11,28 @@ export function searchBox({ id, big = false, placeholder = 'Buscar calculadora�
 }
 
 function header(current) {
-  const links = CATEGORIES.map(
-    (c) => `<li><a href="/${c.slug}/" data-cat="${c.slug}"${current === c.slug ? ' aria-current="page"' : ''}><span class="nav__dot" aria-hidden="true"></span>${esc(c.short)}</a></li>`,
-  ).join('');
+  const link = (href, label, cat, active) =>
+    `<li><a href="${href}"${cat ? ` data-cat="${cat}"` : ' data-cat="all"'}${active ? ' aria-current="page"' : ''}><span class="nav__dot" aria-hidden="true"></span>${esc(label)}</a></li>`;
+  const links = CATEGORIES.map((c) => link(`/${c.slug}/`, c.short, c.slug, current === c.slug)).join('') + link('/calculadoras/', 'Todas', null, current === 'all');
+  const mobileLinks = CATEGORIES.map((c) => link(`/${c.slug}/`, c.name, c.slug, current === c.slug)).join('') + link('/calculadoras/', 'Todas as calculadoras', null, current === 'all');
   return `<header class="site-header">
   <div class="wrap site-header__bar">
     <a class="logo" href="/" aria-label="Recibador — página inicial">${LOGO_MARK}<span>Recibador</span></a>
-    <nav class="nav" id="site-nav" aria-label="Categorias">
-      <div class="nav__search">${searchBox({ id: 'q-nav' })}</div>
-      <ul>${links}<li><a href="/calculadoras/"${current === 'all' ? ' aria-current="page"' : ''}>Todas</a></li></ul>
-    </nav>
+    <nav class="nav" aria-label="Categorias"><ul>${links}</ul></nav>
     <div class="header-search">${searchBox({ id: 'q-head' })}</div>
-    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menu">${icon('menu', 'i-menu')}${icon('close', 'i-close')}</button>
+    <button class="menu-btn" type="button" data-menu-open aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menu">${icon('menu')}</button>
   </div>
-</header>`;
+</header>
+<div class="mnav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="mnav__bar wrap">
+    <a class="logo" href="/" aria-label="Recibador — página inicial">${LOGO_MARK}<span>Recibador</span></a>
+    <button class="menu-btn" type="button" data-menu-close aria-label="Fechar menu">${icon('close')}</button>
+  </div>
+  <div class="mnav__body wrap">
+    ${searchBox({ id: 'q-nav' })}
+    <nav aria-label="Categorias"><ul class="mnav__list">${mobileLinks}</ul></nav>
+  </div>
+</div>`;
 }
 
 function footer({ calculatorsByCategory, buildYear }) {
