@@ -136,6 +136,7 @@ ${page.noindex && page.path === '/404.html' ? '' : `<link rel="canonical" href="
 <meta name="color-scheme" content="light dark">
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
