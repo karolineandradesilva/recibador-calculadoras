@@ -42,6 +42,28 @@ function checkRegistry() {
   }
 }
 
+// Central Bank data changes daily. Instead of bundling it (which would change
+// the JS file hashes every day and break HTML cached at the edge), the browser
+// bundles read it from an inline <script> that each page carries.
+const inlineDataPlugin = {
+  name: 'inline-data',
+  setup(b) {
+    b.onResolve({ filter: /data\/(indices|rates)\.json$/ }, (args) => ({ path: path.basename(args.path, '.json'), namespace: 'rdata' }));
+    b.onLoad({ filter: /.*/, namespace: 'rdata' }, (args) => ({
+      contents: `const d = globalThis.__RD && globalThis.__RD[${JSON.stringify(args.path)}];\nif (!d) throw new Error('Dados do Banco Central indisponíveis nesta página.');\nexport default d;\n`,
+      loader: 'js',
+    }));
+  },
+};
+
+async function dataNeeds(calc) {
+  const src = await readFile(path.join(ROOT, 'src/calculators', calc.file), 'utf8');
+  const needs = [];
+  if (src.includes("'./_indices.js'")) needs.push('indices');
+  if (src.includes("'./_rates.js'")) needs.push('rates');
+  return needs;
+}
+
 async function bundle() {
   await rm(TMP, { recursive: true, force: true });
   await mkdir(path.join(TMP, 'entries'), { recursive: true });
@@ -70,6 +92,7 @@ mount(ui, ${JSON.stringify({ slug: c.meta.slug, title: c.meta.h1 })});
     treeShaking: true,
     logLevel: 'warning',
     define: { 'process.env.NODE_ENV': '"production"' },
+    plugins: [inlineDataPlugin],
   });
   const assets = { site: '', home: '', calculators: {} };
   for (const [out, info] of Object.entries(result.metafile.outputs)) {
@@ -149,8 +172,15 @@ async function main() {
     await writePage(`/${cat.slug}/`, categoryPage(cat, ctx));
     sitemapEntries.push({ path: `/${cat.slug}/`, lastmod: buildDate });
   }
+  const DATA = {
+    indices: JSON.parse(await readFile(path.join(ROOT, 'src/data/indices.json'), 'utf8')),
+    rates: JSON.parse(await readFile(path.join(ROOT, 'src/data/rates.json'), 'utf8')),
+  };
   for (const calc of CALCULATORS) {
+    const needs = await dataNeeds(calc);
+    ctx.pageData = needs.length ? Object.fromEntries(needs.map((k) => [k, DATA[k]])) : null;
     await writePage(`/${calc.meta.slug}/`, calculatorPage(calc, ctx));
+    ctx.pageData = null;
     // Pages that depend on daily data change with every data update.
     const lastmod = calc.meta.dynamicData ? buildDate : calc.meta.updated ?? buildDate;
     sitemapEntries.push({ path: `/${calc.meta.slug}/`, lastmod });

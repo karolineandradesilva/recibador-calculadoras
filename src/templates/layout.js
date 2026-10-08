@@ -107,7 +107,8 @@ export function layout(page, ctx) {
   const jsonLd = (page.jsonLd ?? [])
     .map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`)
     .join('\n');
-  const scripts = [ctx.assets.site, ...(page.scripts ?? [])]
+  const inlineData = ctx.pageData ? `<script>window.__RD=${JSON.stringify(ctx.pageData).replace(/</g, '\\u003c')}</script>\n` : '';
+  const scripts = inlineData + [ctx.assets.site, ...(page.scripts ?? [])]
     .map((s) => `<script type="module" src="${s}"></script>`)
     .join('\n');
   return `<!doctype html>
