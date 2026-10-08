@@ -6,6 +6,7 @@ import {
   employeeCost, dsr, workedHours,
 } from '../src/calc/labor.js';
 import { parseISO, vacationTwelfths, thirteenthTwelfths } from '../src/lib/dates.js';
+import { inssEmployee } from '../src/calc/tax.js';
 
 test('net salary R$ 3.000 without dependents', () => {
   const r = netSalary({ gross: 3000 });
@@ -227,3 +228,26 @@ test('worked hours with overnight shift', () => {
 function round(n) {
   return Math.round(n * 100) / 100;
 }
+
+test('vacation: sold days come out of the rest and are paid as allowance', () => {
+  const r = vacation({ salary: 17500, soldDays: 10, advanceThirteenth: true });
+  assert.equal(r.enjoyedDays, 20);
+  assert.equal(r.vacationPay, 11666.67);
+  assert.equal(r.vacationThird, 3888.89);
+  assert.equal(r.allowance, 5833.33);
+  assert.equal(r.allowanceThird, 1944.44);
+  assert.equal(r.gross, 32083.33);
+  // The allowance stays out of the INSS and IR base.
+  assert.equal(r.inss.value, inssEmployee(15555.56).value);
+});
+
+test('vacation: split periods and leftover days', () => {
+  const r = vacation({ salary: 3000, days: 15 });
+  assert.equal(r.enjoyedDays, 15);
+  assert.equal(r.remainingDays, 15);
+  assert.equal(r.vacationPay, 1500);
+  const s = vacation({ salary: 3000, days: 14, soldDays: 10 });
+  assert.equal(s.remainingDays, 6);
+  // Days beyond the entitlement are capped.
+  assert.equal(vacation({ salary: 3000, days: 30, soldDays: 10 }).enjoyedDays, 20);
+});

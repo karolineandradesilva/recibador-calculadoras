@@ -83,8 +83,10 @@ export function mount(ui, { slug, title }) {
   };
 
   const run = ({ showAll = false, fromUser = true } = {}) => {
-    const values = collect();
+    let values = collect();
     syncVisibility(values);
+    // onChange may adjust fields (e.g. vacation days after selling days).
+    if (ui.onChange) values = collect();
     const errors = validate(values, showAll);
     if (Object.keys(errors).length) {
       if (showAll) {
@@ -185,9 +187,9 @@ export function mount(ui, { slug, title }) {
       lastResult = null;
       root.classList.remove('is-stale');
       out.innerHTML = EMPTY_RESULT;
+      // Focus stays on the button: moving it to a field would pop up the
+      // on-screen keyboard on phones.
       status.textContent = 'Campos limpos.';
-      const first = form.querySelector('.field:not([hidden]) .input');
-      if (first) first.focus({ preventScroll: true });
       track('calculator_reset', { calculator: slug });
     } else if (action === 'print') {
       track('calculator_print', { calculator: slug });
@@ -216,14 +218,16 @@ export function mount(ui, { slug, title }) {
     }
   });
 
-  // Restore state from the URL hash.
-  if (location.hash.length > 1) {
+  // Restore state from the URL hash (on load and when a shared link for
+  // this same calculator is opened while the page is already showing).
+  const applyHash = () => {
+    if (location.hash.length <= 1) return false;
     const params = new URLSearchParams(location.hash.slice(1));
-    let restored = false;
+    if (![...params.keys()].some((k) => byName[k])) return false;
+    form.reset();
     for (const [k, v] of params) {
       const f = byName[k];
       if (!f) continue;
-      restored = true;
       if (f.type === 'radio') {
         const r = form.querySelector(`input[name="${k}"][value="${CSS.escape(v)}"]`);
         if (r) r.checked = true;
@@ -235,15 +239,16 @@ export function mount(ui, { slug, title }) {
       }
     }
     // Checkboxes absent from the hash were unchecked.
-    if (restored) {
-      for (const f of fields) {
-        if (f.type === 'checkbox' && !params.has(f.name)) form.elements.namedItem(f.name).checked = false;
-      }
-      run({ fromUser: false, showAll: true });
+    for (const f of fields) {
+      if (f.type === 'checkbox' && !params.has(f.name)) form.elements.namedItem(f.name).checked = false;
     }
-  } else {
-    syncVisibility(collect());
-  }
+    run({ fromUser: false, showAll: true });
+    return true;
+  };
+  if (!applyHash()) syncVisibility(collect());
+  window.addEventListener('hashchange', () => {
+    if (applyHash()) out.scrollIntoView({ block: 'nearest' });
+  });
   root.classList.add('is-ready');
 }
 

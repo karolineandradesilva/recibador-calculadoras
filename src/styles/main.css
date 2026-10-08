@@ -3058,6 +3058,14 @@ tbody tr:last-child td {
   --cat: var(--brand);
 }
 
+/* "Início": the logo's "=" (green and gold bars), not a category square. */
+[data-cat='home'] .nav__dot {
+  border-radius: 1px;
+  background:
+    linear-gradient(var(--brand) 0 0) top / 100% 36% no-repeat,
+    linear-gradient(var(--gold) 0 0) bottom / 100% 36% no-repeat;
+}
+
 /* "Todas": a dot with every category color. */
 [data-cat='all'] .nav__dot {
   background: conic-gradient(var(--c-trabalho) 0 60deg, var(--c-impostos) 0 120deg, var(--c-financas) 0 180deg, var(--c-indices) 0 240deg, var(--c-negocios) 0 300deg, var(--c-dia-a-dia) 0 360deg);

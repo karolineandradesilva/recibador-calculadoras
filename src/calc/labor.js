@@ -87,17 +87,19 @@ export function vacationDaysByAbsences(absences) {
  * @param {number} [input.variableAverage] average of overtime, commissions etc.
  * @param {number} [input.absences] unjustified absences in the accrual period
  * @param {number} [input.soldDays] days converted into "abono pecuniário"
+ * @param {number} [input.days] vacation days taken now (split vacation); defaults to all remaining days
  * @param {number} [input.dependents]
  * @param {boolean} [input.advanceThirteenth] first installment of the 13th paid with vacation
  */
 export function vacation(input, p = CURRENT) {
   const {
-    salary, variableAverage = 0, absences = 0, soldDays = 0, dependents = 0, advanceThirteenth = false,
+    salary, variableAverage = 0, absences = 0, soldDays = 0, days = null, dependents = 0, advanceThirteenth = false,
   } = input;
   const entitledDays = vacationDaysByAbsences(absences);
   const maxSell = Math.floor(entitledDays / 3);
   const sold = Math.min(Math.max(0, Math.floor(soldDays)), maxSell);
-  const enjoyed = entitledDays - sold;
+  const available = entitledDays - sold;
+  const enjoyed = days == null ? available : Math.min(Math.max(0, Math.floor(days)), available);
   const base = salary + variableAverage;
   const daily = base / 30;
 
@@ -116,6 +118,7 @@ export function vacation(input, p = CURRENT) {
   return {
     entitledDays,
     enjoyedDays: enjoyed,
+    remainingDays: available - enjoyed,
     soldDays: sold,
     maxSellDays: maxSell,
     base: round2(base),

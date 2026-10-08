@@ -1,4 +1,4 @@
-import { vacation } from '../calc/labor.js';
+import { vacation, vacationDaysByAbsences } from '../calc/labor.js';
 import { CURRENT as P } from '../data/params/index.js';
 import { brl, row, inssHint, irrfHint, salaryField, dependentsField, variableField, val } from './_shared.js';
 
@@ -18,52 +18,79 @@ export const meta = {
   legal: true,
 };
 
+// Days of rest that still fit after the days sold and the absence cut.
+const restLimit = (v) => vacationDaysByAbsences(val(v.absences)) - val(v.sold);
+
 export const ui = {
   fields: [
     salaryField(),
-    {
-      name: 'sold',
-      label: 'Vender dias de férias?',
-      type: 'radio',
-      default: '0',
-      options: [
-        { value: '0', label: 'Não vender' },
-        { value: '10', label: 'Vender 10 dias' },
-      ],
-      help: 'O abono pecuniário permite converter até 1/3 das férias em dinheiro.',
-    },
+    { name: 'days', label: 'Dias de férias', type: 'integer', default: 30, min: 5, max: 30, width: 'half', help: 'Dias de descanso que você vai tirar agora. Para férias divididas, informe só este período.' },
+    { name: 'sold', label: 'Dias vendidos', type: 'integer', default: 0, min: 0, max: 10, width: 'half', required: false, help: 'Abono pecuniário: até 1/3 das férias (10 dias, para quem tem 30).' },
     dependentsField(),
     { name: 'absences', label: 'Faltas no período', type: 'integer', default: 0, min: 0, max: 365, width: 'half', help: 'Faltas injustificadas no período aquisitivo. Mais de 5 reduzem os dias de férias.' },
     variableField(),
     { name: 'advance', label: 'Receber a 1ª parcela do 13º junto', type: 'checkbox', default: false, advanced: true },
   ],
+  onChange(v, form) {
+    // Selling days takes them out of the rest: if the days typed no longer
+    // fit, bring them down to the maximum (unless the user is typing there).
+    const el = form.elements.namedItem('days');
+    const limit = restLimit(v);
+    if (el && document.activeElement !== el && Number.isFinite(v.days) && limit >= 5 && v.days > limit) el.value = String(limit);
+  },
+  validate(v) {
+    const entitled = vacationDaysByAbsences(val(v.absences));
+    if (entitled === 0) return null;
+    const maxSell = Math.floor(entitled / 3);
+    if (val(v.sold) > maxSell) return { sold: `Com ${entitled} dias de direito, dá para vender no máximo ${maxSell}.` };
+    const limit = entitled - val(v.sold);
+    if (v.days > limit) {
+      return { days: val(v.sold) ? `Com ${val(v.sold)} dias vendidos, sobram no máximo ${limit} dias de descanso.` : `Pelas faltas, o direito é de ${entitled} dias de férias.` };
+    }
+    return null;
+  },
   compute(v) {
     const r = vacation({
       salary: v.salary,
       variableAverage: val(v.variable),
       absences: val(v.absences),
-      soldDays: Number(v.sold),
+      soldDays: val(v.sold),
+      days: v.days,
       dependents: val(v.dependents),
       advanceThirteenth: v.advance,
     });
     if (r.entitledDays === 0) {
       return { hero: { label: 'Férias', value: 'Sem direito', tone: 'warn' }, alert: { tone: 'warn', text: 'Com mais de 32 faltas injustificadas no período aquisitivo, o empregado perde o direito às férias desse período (CLT, art. 130).' } };
     }
+    const parts = [`${r.enjoyedDays} de descanso`];
+    if (r.soldDays) parts.push(`${r.soldDays} vendidos`);
+    if (r.remainingDays) parts.push(`${r.remainingDays} para outro período`);
+    const soldTotal = r.allowance + r.allowanceThird;
+    let gain = 0;
+    if (r.soldDays) {
+      const without = vacation({ salary: v.salary, variableAverage: val(v.variable), absences: val(v.absences), soldDays: 0, days: r.enjoyedDays + r.soldDays, dependents: val(v.dependents), advanceThirteenth: v.advance });
+      gain = r.net - without.net;
+    }
+    const notes = ['O pagamento deve ser feito até 2 dias antes do início das férias (CLT, art. 145).'];
+    if (r.soldDays) notes.push(`Vender férias é trabalhar esses ${r.soldDays} dias: além do abono, o salário deles vem no contracheque normal, com os descontos de sempre.`);
+    if (r.remainingDays) notes.push('Férias divididas: até 3 períodos, um deles com pelo menos 14 dias e os outros com pelo menos 5 (CLT, art. 134, §1º). INSS e IR são calculados só sobre este período.');
     return {
-      hero: { label: 'Valor líquido das férias', value: brl(r.net), sub: `${r.enjoyedDays} dias de descanso${r.soldDays ? ` + ${r.soldDays} dias vendidos` : ''}` },
+      hero: { label: 'Valor líquido das férias', value: brl(r.net), sub: `${r.entitledDays} dias de direito: ${parts.join(' + ')}` },
       alert: r.entitledDays < 30 ? { tone: 'warn', text: `Por causa das faltas, o direito é de ${r.entitledDays} dias de férias (CLT, art. 130).` } : null,
       cards: [
+        { label: `Férias (${r.enjoyedDays} dias) + 1/3`, value: brl(r.vacationPay + r.vacationThird) },
+        r.soldDays ? { label: `Venda de ${r.soldDays} dias + 1/3`, value: brl(soldTotal), sub: gain > 0 ? `Sem INSS e IR · ${brl(gain)} a mais que tirar ${r.enjoyedDays + r.soldDays} dias` : 'Sem INSS e IR', tone: 'plus' } : null,
         { label: 'Total bruto', value: brl(r.gross) },
         { label: 'Descontos', value: brl(r.discounts), tone: 'minus' },
-      ],
+      ].filter(Boolean),
       sections: [
         {
           title: 'Demonstrativo',
           rows: [
-            row(`Férias (${r.enjoyedDays} dias)`, r.vacationPay, 'plus'),
-            row('1/3 constitucional', r.vacationThird, 'plus'),
-            r.allowance ? row(`Abono pecuniário (${r.soldDays} dias)`, r.allowance, 'plus', 'Isento de INSS e IR') : null,
-            r.allowanceThird ? row('1/3 sobre o abono', r.allowanceThird, 'plus', 'Isento de INSS e IR') : null,
+            row(`Férias (${r.enjoyedDays} dias de descanso)`, r.vacationPay, 'plus'),
+            row('1/3 constitucional das férias', r.vacationThird, 'plus'),
+            r.soldDays ? row(`Venda de ${r.soldDays} dias (abono pecuniário)`, r.allowance, 'plus', 'Isento de INSS e IR') : null,
+            r.soldDays ? row(`1/3 sobre os ${r.soldDays} dias vendidos`, r.allowanceThird, 'plus', 'Isento de INSS e IR') : null,
             r.advance ? row('Adiantamento do 13º (1ª parcela)', r.advance, 'plus', 'Sem descontos agora') : null,
             row('INSS', r.inss.value, 'minus', inssHint(r.inss)),
             row('IRRF', r.irrf.value, 'minus', irrfHint(r.irrf)),
@@ -71,7 +98,7 @@ export const ui = {
           ],
         },
       ],
-      notes: ['O pagamento deve ser feito até 2 dias antes do início das férias (CLT, art. 145).'],
+      notes,
     };
   },
 };
@@ -83,7 +110,7 @@ export function content(ex, h) {
         id: 'como-usar',
         title: 'Como usar',
         html: `<ol><li>Informe o salário bruto. Se você recebe horas extras, comissões ou adicionais com frequência, coloque a média em <em>Mais opções</em>: ela integra as férias.</li>
-<li>Escolha se vai vender 10 dias (abono pecuniário).</li>
+<li>Informe quantos dias de descanso vai tirar (30, ou o período desta parte, se as férias forem divididas) e quantos dias vai vender (abono pecuniário, até 10).</li>
 <li>Informe os dependentes para o IR e eventuais faltas injustificadas no período aquisitivo.</li></ol>`,
       },
       {
