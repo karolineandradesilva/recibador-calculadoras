@@ -164,7 +164,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+}
+
+/* Never let anything pan the page sideways (iOS Safari ignores
+   overflow-x: hidden on body alone). clip does not create a scroll
+   container, so the sticky header keeps working. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+@supports not (overflow-x: clip) {
+  html {
+    overflow-x: hidden;
+  }
 }
 
 img,
@@ -278,10 +292,24 @@ td,
   position: sticky;
   top: 0;
   z-index: 40;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+/* The blur lives on a pseudo-element: backdrop-filter on the header itself
+   would make it the containing block of the fixed mobile menu, trapping the
+   menu inside the 64px bar. */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: color-mix(in srgb, var(--bg) 84%, transparent);
   backdrop-filter: saturate(1.6) blur(14px);
   -webkit-backdrop-filter: saturate(1.6) blur(14px);
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.nav-open .site-header::before {
+  background: var(--bg);
 }
 
 .site-header__bar {
@@ -362,7 +390,22 @@ td,
   height: 22px;
 }
 
-.nav-open {
+.menu-btn .i-close,
+.nav-open .menu-btn .i-menu {
+  display: none;
+}
+
+.nav-open .menu-btn .i-close {
+  display: block;
+}
+
+.nav-open .site-header {
+  position: fixed;
+  left: 0;
+  right: 0;
+}
+
+.nav-open body {
   overflow: hidden;
 }
 
@@ -370,7 +413,9 @@ td,
   display: block;
   position: fixed;
   inset: 64px 0 0;
+  height: calc(100dvh - 64px);
   background: var(--bg);
+  overscroll-behavior: contain;
   padding: 16px var(--gutter) 40px;
   overflow-y: auto;
   z-index: 39;
@@ -2073,7 +2118,10 @@ tbody tr:last-child td {
 .home-hero::before {
   content: '';
   position: absolute;
-  inset: -140px -50vw 0;
+  top: -140px;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
   z-index: -1;
   background:
     radial-gradient(40% 60% at 85% 22%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 70%),
@@ -2903,5 +2951,87 @@ tbody tr:last-child td {
   .calc__form {
     padding-left: 14px;
     padding-right: 14px;
+  }
+}
+
+/* Content tables become stacked cards on phones: no sideways scrolling. */
+@media (max-width: 639px) {
+  .table--stack {
+    border: 0;
+    background: none;
+    overflow: visible;
+  }
+
+  .table--stack table,
+  .table--stack tbody,
+  .table--stack tr,
+  .table--stack th,
+  .table--stack td {
+    display: block;
+    width: 100%;
+  }
+
+  .table--stack thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .table--stack tr {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 6px 14px;
+    margin-bottom: 10px;
+  }
+
+  .table--stack th,
+  .table--stack td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    text-align: right;
+    white-space: normal;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .table--stack tr > :last-child {
+    border-bottom: 0;
+  }
+
+  .table--stack th[data-label]::before,
+  .table--stack td[data-label]::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    max-width: 48%;
+    text-align: left;
+    font-size: 0.76rem;
+    font-weight: 650;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .table--stack tbody th {
+    display: block;
+    text-align: left;
+    font: 700 1.02rem/1.3 var(--font-display);
+    color: var(--ink);
+    padding: 10px 0 8px;
+  }
+
+  .table--stack tbody th::before {
+    display: none;
+  }
+
+  /* Numeric result tables stay tabular but compact, scrolling inside their own box. */
+  .calc__result th,
+  .calc__result td {
+    padding: 7px 8px;
+    font-size: 0.8rem;
   }
 }

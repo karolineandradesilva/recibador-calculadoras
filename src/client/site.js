@@ -20,15 +20,24 @@ for (const el of document.querySelectorAll('[data-year]')) el.textContent = Stri
 const menuBtn = document.querySelector('[data-menu-toggle]');
 const nav = document.getElementById('site-nav');
 if (menuBtn && nav) {
-  menuBtn.addEventListener('click', () => {
-    const open = menuBtn.getAttribute('aria-expanded') !== 'true';
+  const setOpen = (open) => {
     menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
     document.documentElement.classList.toggle('nav-open', open);
+  };
+  menuBtn.addEventListener('click', () => setOpen(menuBtn.getAttribute('aria-expanded') !== 'true'));
+  // Closing on navigation keeps the back/forward cache from restoring an open menu.
+  nav.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+  window.addEventListener('pageshow', () => setOpen(false));
+  // Leaving the mobile breakpoint with the menu open must not leave the page locked.
+  matchMedia('(min-width: 1000px)').addEventListener('change', (e) => {
+    if (e.matches) setOpen(false);
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.documentElement.classList.contains('nav-open')) {
-      menuBtn.setAttribute('aria-expanded', 'false');
-      document.documentElement.classList.remove('nav-open');
+      setOpen(false);
       menuBtn.focus();
     }
   });

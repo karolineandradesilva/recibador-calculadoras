@@ -22,7 +22,7 @@ function header(current) {
       <ul>${links}<li><a href="/calculadoras/"${current === 'all' ? ' aria-current="page"' : ''}>Todas</a></li></ul>
     </nav>
     <div class="header-search">${searchBox({ id: 'q-head' })}</div>
-    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menu">${icon('menu')}</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menu">${icon('menu', 'i-menu')}${icon('close', 'i-close')}</button>
   </div>
 </header>`;
 }

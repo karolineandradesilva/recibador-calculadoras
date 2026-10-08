@@ -157,10 +157,13 @@ async function main() {
         if (!bySlug[slug] && !process.env.RECIBADOR_DRAFT) throw new Error(`Link interno para calculadora inexistente: ${slug}`);
         return `<a href="/${slug}/">${text}</a>`;
       },
-      table: (columns, rows) =>
-        `<div class="table-wrap"><table><thead><tr>${columns.map((c) => `<th scope="col">${c}</th>`).join('')}</tr></thead><tbody>${rows
-          .map((r) => `<tr>${r.map((c, i) => (i === 0 ? `<th scope="row">${c}</th>` : `<td>${c}</td>`)).join('')}</tr>`)
-          .join('')}</tbody></table></div>`,
+      // Content tables stack into cards on narrow screens (see .table--stack).
+      table: (columns, rows) => {
+        const label = (i) => esc(String(columns[i]).replace(/<[^>]+>/g, ''));
+        return `<div class="table-wrap table--stack"><table><thead><tr>${columns.map((c) => `<th scope="col">${c}</th>`).join('')}</tr></thead><tbody>${rows
+          .map((r) => `<tr>${r.map((c, i) => (i === 0 ? `<th scope="row" data-label="${label(i)}">${c}</th>` : `<td data-label="${label(i)}">${c}</td>`)).join('')}</tr>`)
+          .join('')}</tbody></table></div>`;
+      },
     },
   };
 
