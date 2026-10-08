@@ -86,7 +86,7 @@ Férias = valor do dia × dias de descanso (+ 1/3, com INSS e IR)</div>
       {
         id: 'vale-a-pena',
         title: 'Vale a pena vender?',
-        html: `<p>Financeiramente, quase sempre sim: o abono e o seu terço são <strong>isentos de INSS e de Imposto de Renda</strong> (CLT, art. 144, e Lei 8.212/1991, art. 28, §9º; a Receita Federal deixou de tributar o abono após decisões reiteradas do STJ), e você ainda recebe o salário dos dias trabalhados. O custo é o descanso: 20 dias em vez de 30.</p>
+        html: `<p>Do ponto de vista financeiro, costuma compensar: o abono e o seu terço são <strong>isentos de INSS e de Imposto de Renda</strong> (CLT, art. 144, e Lei 8.212/1991, art. 28, §9º; a Receita Federal deixou de tributar o abono após decisões reiteradas do STJ), e você ainda recebe o salário dos dias trabalhados. O custo é o descanso: 20 dias em vez de 30. A decisão depende da sua situação e das suas prioridades.</p>
 <p>Considere vender quando precisar de dinheiro extra ou de quitar dívidas caras. Se o descanso for importante para a sua saúde ou se você já vem acumulando cansaço, os 30 dias podem valer mais do que o dinheiro.</p>`,
       },
     ],

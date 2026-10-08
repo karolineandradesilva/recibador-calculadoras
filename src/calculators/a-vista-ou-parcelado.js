@@ -82,7 +82,7 @@ Se preço à vista > valor presente → parcele e deixe o dinheiro rendendo</div
     ],
     faq: [
       { q: 'Parcelado sem juros é sempre melhor?', a: '<p>Só se o preço à vista for igual ao total parcelado. Quando há desconto à vista, os "sem juros" escondem uma taxa, que a calculadora mostra em "Juros embutidos".</p>' },
-      { q: 'E se eu não tiver o dinheiro aplicado?', a: '<p>Então a comparação é outra: parcelar evita usar a reserva de emergência ou tomar empréstimo. Nunca entre no rotativo do cartão para pagar parcelas.</p>' },
+      { q: 'E se eu não tiver o dinheiro aplicado?', a: '<p>Então a comparação é outra: parcelar evita usar a reserva de emergência ou tomar empréstimo. Evite usar o rotativo do cartão para pagar parcelas: ele costuma ter juros muito altos.</p>' },
     ],
     limitations: ['Considera parcelas mensais iguais, a primeira daqui a um mês, e rendimento constante.'],
   };

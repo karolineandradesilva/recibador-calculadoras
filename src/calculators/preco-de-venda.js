@@ -10,7 +10,7 @@ export const meta = {
   title: 'Calculadora de Preço de Venda com Impostos, Taxas e Lucro',
   description: 'Forme o preço de venda a partir do custo, impostos, despesas, taxa de cartão, comissão e margem de lucro desejada, pelo método do markup divisor.',
   lead: 'Calcule o preço certo para cobrir custos, impostos e taxas e ainda garantir a margem de lucro que você quer.',
-  card: 'Preço com impostos, taxas e margem garantida.',
+  card: 'Preço com impostos, taxas e a margem desejada.',
   keywords: ['preco de venda', 'formacao de preco', 'precificacao', 'markup divisor', 'quanto cobrar', 'precificar produto'],
   related: ['markup', 'margem-de-lucro', 'ponto-de-equilibrio', 'simples-nacional', 'lucro-do-negocio'],
   sources: [],

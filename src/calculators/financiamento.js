@@ -105,7 +105,7 @@ Price: parcela = PV × i ÷ [1 − (1 + i)^−n]</div>`,
     ],
     faq: [
       { q: 'Vale a pena amortizar o financiamento?', a: '<p>Em geral, sim, quando a taxa do financiamento é maior que o rendimento líquido que você obteria investindo o dinheiro. Amortizar reduzindo o prazo economiza mais juros do que reduzindo a parcela.</p>' },
-      { q: 'Por que a Caixa usa SAC?', a: '<p>O SAC reduz o saldo devedor mais rápido, o que diminui o risco do banco e os juros totais pagos. Por isso é o padrão no crédito imobiliário.</p>' },
+      { q: 'Por que o SAC é comum no crédito imobiliário?', a: '<p>O SAC reduz o saldo devedor mais rápido, o que diminui o risco para quem empresta e os juros totais pagos. Por isso é muito usado em financiamentos de imóveis.</p>' },
     ],
     limitations: ['Não considera correção monetária do saldo, seguros variáveis, IOF nem tarifas.', 'Para simulações oficiais, use o simulador do banco e compare o CET.'],
   };

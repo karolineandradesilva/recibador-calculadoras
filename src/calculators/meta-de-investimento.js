@@ -33,7 +33,7 @@ export const ui = {
     const sim = compoundInterest({ principal: val(v.initial), monthlyContribution: pmt, monthlyRate: i, months });
     if (!Number.isFinite(sim.total) || !Number.isFinite(pmt) || sim.total > 1e15) return TOO_LARGE;
     return {
-      hero: { label: 'Invista por mês', value: brl(pmt), sub: pmt === 0 ? 'O que você já tem alcança a meta sozinho' : `Durante ${months} meses, a ${rateLabel(i)}` },
+      hero: { label: 'Aporte mensal necessário', value: brl(pmt), sub: pmt === 0 ? 'O que você já tem alcança a meta sozinho' : `Durante ${months} meses, a ${rateLabel(i)}` },
       cards: [
         { label: 'Total dos aportes', value: brl(sim.invested) },
         { label: 'Juros ganhos', value: brl(sim.interest), tone: 'plus' },

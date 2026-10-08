@@ -43,7 +43,7 @@ export const INSTITUTIONAL_PAGES = [
     title: 'Metodologia dos cálculos',
     description: 'Como o Recibador calcula: fontes oficiais, tabelas vigentes, arredondamentos, premissas, atualização automática de índices e testes automatizados.',
     updated: UPDATED,
-    html: `<p class="lead">Esta página explica de onde vêm os números do Recibador, como eles são aplicados e como garantimos que continuem corretos.</p>
+    html: `<p class="lead">Esta página explica de onde vêm os números do Recibador, como eles são aplicados e o que fazemos para mantê-los corretos e atualizados.</p>
 <h2>1. Fontes</h2>
 <p>Usamos exclusivamente fontes primárias e oficiais. Os parâmetros legais em vigor (regras de ${P.year}, revisadas em ${dateLabel(P.reviewedAt)}) estão baseados em:</p>
 <ul class="sources">${sourceList()}</ul>
@@ -51,7 +51,7 @@ export const INSTITUTIONAL_PAGES = [
 <h2>2. Parâmetros centralizados e com validade</h2>
 <p>Todas as alíquotas, faixas e valores legais ficam em um único arquivo de parâmetros por ano, com data de início e fim de vigência e a fonte de cada valor. Quando as tabelas mudam (normalmente em janeiro), um novo arquivo é criado. Um teste automático impede a publicação do site se os parâmetros estiverem vencidos.</p>
 <h2>3. Monitoramento das fontes</h2>
-<p>Uma rotina automática verifica semanalmente as páginas oficiais da Receita Federal e do INSS e abre um alerta para revisão manual quando detecta mudanças. Mudanças legais são sempre revisadas por uma pessoa antes de entrarem no site.</p>
+<p>Uma rotina automática verifica semanalmente as páginas oficiais da Receita Federal e do INSS e abre um alerta para revisão manual quando detecta mudanças. Mudanças legais são revisadas manualmente antes de entrarem no site.</p>
 <h2>4. Arredondamento</h2>
 <p>Os valores monetários são arredondados ao centavo em cada etapa em que a legislação ou a prática de folha de pagamento também arredonda (por exemplo, INSS e IRRF). Taxas e fatores de correção são calculados com todas as casas decimais disponíveis e arredondados apenas na exibição. Pequenas diferenças de centavos em relação a outros sistemas podem ocorrer.</p>
 <h2>5. Premissas comuns</h2>
