@@ -1,0 +1,50 @@
+name: Monitorar fontes oficiais
+
+on:
+  schedule:
+    # Mondays at 11:00 UTC.
+    - cron: '0 11 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verificar páginas da Receita, INSS e MTE
+        id: check
+        run: |
+          set +e
+          node scripts/monitor-sources.js
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Abrir alerta para revisão
+        if: steps.check.outputs.code == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Revisar regras: fontes oficiais mudaram ($(date +%Y-%m-%d))"
+          {
+            cat .source-alerts.md
+            echo
+            echo "Revise os valores em src/data/params/ e rode npm test antes de publicar."
+          } > body.md
+          gh issue create --title "$title" --body-file body.md
+
+      - name: Salvar estado do monitor
+        run: |
+          if ! git diff --quiet -- src/data/source-state.json 2>/dev/null || [ -n "$(git status --porcelain src/data/source-state.json)" ]; then
+            git config user.name "recibador-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add src/data/source-state.json
+            git commit -m "Update official source fingerprints"
+            git push
+          fi

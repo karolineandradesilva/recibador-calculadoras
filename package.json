@@ -1,0 +1,23 @@
+{
+  "name": "recibador-calculadoras",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Recibador — portal brasileiro de calculadoras gratuitas de trabalho, impostos e finanças.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js && node scripts/serve.js",
+    "serve": "node scripts/serve.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "validate": "node scripts/validate-site.js",
+    "check": "npm test && npm run build && npm run validate",
+    "update:indices": "node scripts/update-indices.js",
+    "monitor:sources": "node scripts/monitor-sources.js"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
