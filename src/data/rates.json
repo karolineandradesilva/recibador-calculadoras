@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-10T15:20:31.823Z",
+ "updatedAt": "2026-10-12T18:59:16.988Z",
  "latest": {
   "selic": {
    "label": "Meta Selic (% a.a.)",
@@ -9,7 +9,7 @@
   "cdi": {
    "label": "CDI anualizado base 252 (% a.a.)",
    "value": 13.65,
-   "date": "2026-10-08"
+   "date": "2026-10-09"
   },
   "tr": {
    "label": "TR mensal (%)",
