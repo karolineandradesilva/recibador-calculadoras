@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-16T13:58:01.154Z",
+ "updatedAt": "2026-10-17T12:57:03.142Z",
  "latest": {
   "selic": {
    "label": "Meta Selic (% a.a.)",
@@ -23,13 +23,13 @@
   },
   "usd": {
    "label": "Dólar comercial PTAX — venda (R$)",
-   "value": 5.0521,
-   "date": "2026-10-15"
+   "value": 5.0826,
+   "date": "2026-10-16"
   },
   "eur": {
    "label": "Euro PTAX — venda (R$)",
-   "value": 5.6609,
-   "date": "2026-10-15"
+   "value": 5.7088,
+   "date": "2026-10-16"
   }
  }
 }
