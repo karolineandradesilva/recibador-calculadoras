@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-06T16:43:53.285Z",
+ "updatedAt": "2026-11-09T19:47:06.463Z",
  "latest": {
   "selic": {
    "label": "Meta Selic (% a.a.)",
@@ -9,12 +9,12 @@
   "cdi": {
    "label": "CDI anualizado base 252 (% a.a.)",
    "value": 13.65,
-   "date": "2026-11-05"
+   "date": "2026-11-06"
   },
   "tr": {
    "label": "TR mensal (%)",
-   "value": 0.1695,
-   "date": "2026-11-05"
+   "value": 0.1487,
+   "date": "2026-11-06"
   },
   "savings": {
    "label": "Rendimento mensal da poupança (%)",
@@ -28,8 +28,8 @@
   },
   "eur": {
    "label": "Euro PTAX — venda (R$)",
-   "value": 6.1317,
-   "date": "2026-11-06"
+   "value": 6.1741,
+   "date": "2026-11-09"
   }
  }
 }
