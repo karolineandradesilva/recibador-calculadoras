@@ -43,7 +43,7 @@
       "R$ 4.664,68",
       "R$ 4.729,91"
     ],
-    "checkedAt": "2026-11-16T20:47:35.985Z"
+    "checkedAt": "2026-11-23T22:27:01.650Z"
   },
   "inss": {
     "hash": "28e19f4ab31c53a6",
@@ -61,20 +61,20 @@
       "R$ 8.475,55",
       "R$ 81,05"
     ],
-    "checkedAt": "2026-11-16T20:47:36.320Z"
+    "checkedAt": "2026-11-23T22:27:02.109Z"
   },
   "familyAllowance": {
     "hash": "e3b0c44298fc1c14",
     "sample": [],
-    "checkedAt": "2026-11-16T20:47:36.494Z"
+    "checkedAt": "2026-11-23T22:27:02.346Z"
   },
   "unemployment": {
     "hash": "e3b0c44298fc1c14",
     "sample": [],
-    "checkedAt": "2026-11-16T20:47:36.671Z"
+    "checkedAt": "2026-11-23T22:27:02.583Z"
   },
   "nextYearIrrf": {
     "exists": false,
-    "checkedAt": "2026-11-16T20:47:37.741Z"
+    "checkedAt": "2026-11-23T22:27:03.724Z"
   }
 }
