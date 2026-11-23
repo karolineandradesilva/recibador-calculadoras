@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-20T17:45:45.222Z",
+ "updatedAt": "2026-11-23T21:16:18.376Z",
  "latest": {
   "selic": {
    "label": "Meta Selic (% a.a.)",
@@ -14,22 +14,22 @@
   "tr": {
    "label": "TR mensal (%)",
    "value": 0.1693,
-   "date": "2026-11-18"
+   "date": "2026-11-19"
   },
   "savings": {
    "label": "Rendimento mensal da poupança (%)",
    "value": 0.6701,
-   "date": "2026-11-18"
+   "date": "2026-11-19"
   },
   "usd": {
    "label": "Dólar comercial PTAX — venda (R$)",
-   "value": 5.8889,
-   "date": "2026-11-19"
+   "value": 5.9708,
+   "date": "2026-11-23"
   },
   "eur": {
    "label": "Euro PTAX — venda (R$)",
-   "value": 6.4672,
-   "date": "2026-11-19"
+   "value": 6.5076,
+   "date": "2026-11-23"
   }
  }
 }
